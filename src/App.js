@@ -2,6 +2,9 @@ import "./App.css";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import ContactsList from "./components/ContactsList";
+import Filter from "./components/Filter";
+import ContactForm from "./components/ContactForm";
+import Container from "./components/Container";
 
 class App extends React.Component {
   state = {
@@ -12,24 +15,17 @@ class App extends React.Component {
       { id: uuidv4(), name: "Annie Copeland", number: "227-91-26" },
     ],
     filter: "",
-    name: "",
-    number: "",
-  };
-  filteredArray = [];
-
-  handleInput = (e) => {
-    const { name, value } = e.currentTarget;
-    this.setState({ [name]: value });
   };
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.state.contacts.push({
+  formSubmitHandler = ({ name, number }) => {
+    const newItem = {
       id: uuidv4(),
-      name: this.state.name,
-      number: this.state.number,
-    });
-    this.resetForm();
+      name: name,
+      number: number,
+    };
+    this.setState((prevState) => ({
+      contacts: [...prevState.contacts, newItem],
+    }));
   };
 
   handleFiltering = (e) => {
@@ -42,54 +38,20 @@ class App extends React.Component {
     );
   };
 
-  resetForm = () => {
-    this.setState({
-      name: "",
-      number: "",
-    });
-  };
-
   render() {
     return (
       <div className="App">
-        <div>
-          <h1>Phonebook</h1>
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              Name
-              <input
-                type="text"
-                name="name"
-                onChange={this.handleInput}
-                value={this.state.name}
-              ></input>
-            </label>
-            <label>
-              Number
-              <input
-                type="text"
-                name="number"
-                onChange={this.handleInput}
-                value={this.state.number}
-              ></input>
-            </label>
-            <button type="submit">Add contact</button>
-          </form>
-        </div>
-        <div>
-          <h1>Contacts</h1>
-          <input
-            type="text"
-            name="filter"
-            onChange={this.handleFiltering}
-          ></input>
-
+        <Container title="Phonebook">
+          <ContactForm onSubmit={this.formSubmitHandler} />
+        </Container>
+        <Container title="Contacts">
+          <Filter onChange={this.handleFiltering} />
           {this.state.filter.length > 0 ? (
             <ContactsList contacts={this.filteredContacts()} />
           ) : (
             <ContactsList contacts={this.state.contacts} />
           )}
-        </div>
+        </Container>
       </div>
     );
   }
