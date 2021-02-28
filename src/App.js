@@ -18,6 +18,15 @@ class App extends React.Component {
   };
 
   formSubmitHandler = ({ name, number }) => {
+    if (this.isContactExist(name)) alert(`${name} is already in contacts`);
+    else this.addNewContact({ name, number });
+  };
+
+  isContactExist = (name) => {
+    return this.state.contacts.find((contact) => contact.name === name);
+  };
+
+  addNewContact = ({ name, number }) => {
     const newItem = {
       id: uuidv4(),
       name: name,
@@ -27,7 +36,6 @@ class App extends React.Component {
       contacts: [...prevState.contacts, newItem],
     }));
   };
-
   handleFiltering = (e) => {
     this.setState({ filter: e.currentTarget.value });
   };
