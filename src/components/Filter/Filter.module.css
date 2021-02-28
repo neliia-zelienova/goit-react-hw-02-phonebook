@@ -1,0 +1,20 @@
+.form_label {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+.form_input {
+  border: 1px solid #cdcdcd;
+  border-radius: 3px;
+  transition: background-color 500ms ease;
+}
+.form_input:hover,
+.form_input:focus {
+  background-color: #efefef;
+}
+
+.form_input:focus {
+  outline: none;
+}
