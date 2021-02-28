@@ -27,15 +27,22 @@ class App extends React.Component {
   };
 
   addNewContact = ({ name, number }) => {
-    const newItem = {
+    const newContact = {
       id: uuidv4(),
       name: name,
       number: number,
     };
     this.setState((prevState) => ({
-      contacts: [...prevState.contacts, newItem],
+      contacts: [...prevState.contacts, newContact],
     }));
   };
+
+  deleteContact = (id) => {
+    this.setState((prevState) => ({
+      contacts: [...prevState.contacts.filter((contact) => contact.id !== id)],
+    }));
+  };
+
   handleFiltering = (e) => {
     this.setState({ filter: e.currentTarget.value });
   };
@@ -55,9 +62,15 @@ class App extends React.Component {
         <Container title="Contacts">
           <Filter onChange={this.handleFiltering} />
           {this.state.filter.length > 0 ? (
-            <ContactsList contacts={this.filteredContacts()} />
+            <ContactsList
+              contacts={this.filteredContacts()}
+              onDelete={this.deleteContact}
+            />
           ) : (
-            <ContactsList contacts={this.state.contacts} />
+            <ContactsList
+              contacts={this.state.contacts}
+              onDelete={this.deleteContact}
+            />
           )}
         </Container>
       </div>
