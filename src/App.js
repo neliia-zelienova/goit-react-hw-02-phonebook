@@ -5,7 +5,7 @@ import ContactsList from "./components/ContactsList/ContactsList";
 import Filter from "./components/Filter/Filter";
 import ContactForm from "./components/ContactForm/ContactForm";
 import Container from "./components/Container/Container";
-import Notification from './components/Notification';
+import Notification from "./components/Notification";
 
 class App extends React.Component {
   state = {
@@ -63,13 +63,13 @@ class App extends React.Component {
           <ContactForm onSubmit={this.formSubmitHandler} />
         </Container>
         {this.state.contacts.length > 0 ? (
-            <Container title="Contacts">
-              <Filter onChange={this.handleFiltering} />
-              <ContactsList
-                contacts={this.getContactsForRender()}
-                onDelete={this.deleteContact}
-              />
-            </Container>
+          <Container title="Contacts">
+            <Filter onChange={this.handleFiltering} />
+            <ContactsList
+              contacts={this.getContactsForRender()}
+              onDelete={this.deleteContact}
+            />
+          </Container>
         ) : (
           <Notification message="No contacts here yet..." />
         )}
