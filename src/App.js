@@ -1,13 +1,21 @@
 import "./App.css";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
+import ContactsList from "./components/ContactsList";
 
 class App extends React.Component {
   state = {
-    contacts: [{ id: uuidv4(), name: "TestName1", phone: "066-122-80-53" }],
+    contacts: [
+      { id: uuidv4(), name: "Rosie Simpson", number: "459-12-56" },
+      { id: uuidv4(), name: "Hermione Kline", number: "443-89-12" },
+      { id: uuidv4(), name: "Eden Clements", number: "645-17-79" },
+      { id: uuidv4(), name: "Annie Copeland", number: "227-91-26" },
+    ],
+    filter: "",
     name: "",
-    phone: "",
+    number: "",
   };
+  filteredArray = [];
 
   handleInput = (e) => {
     const { name, value } = e.currentTarget;
@@ -19,17 +27,28 @@ class App extends React.Component {
     this.state.contacts.push({
       id: uuidv4(),
       name: this.state.name,
-      phone: this.state.phone
+      number: this.state.number,
     });
     this.resetForm();
+  };
+
+  handleFiltering = (e) => {
+    this.setState({ filter: e.currentTarget.value });
+  };
+
+  filteredContacts = () => {
+    return this.state.contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
+    );
   };
 
   resetForm = () => {
     this.setState({
       name: "",
-      phone: "",
+      number: "",
     });
   };
+
   render() {
     return (
       <div className="App">
@@ -46,12 +65,12 @@ class App extends React.Component {
               ></input>
             </label>
             <label>
-              Phone
+              Number
               <input
                 type="text"
-                name="phone"
+                name="number"
                 onChange={this.handleInput}
-                value={this.state.phone}
+                value={this.state.number}
               ></input>
             </label>
             <button type="submit">Add contact</button>
@@ -59,14 +78,17 @@ class App extends React.Component {
         </div>
         <div>
           <h1>Contacts</h1>
-          <ul>
-            {this.state.contacts.map((contact) => (
-              <li key={contact.id}>
-                <span>{`${contact.name}:`}</span>
-                <span>{contact.phone}</span>
-              </li>
-            ))}
-          </ul>
+          <input
+            type="text"
+            name="filter"
+            onChange={this.handleFiltering}
+          ></input>
+
+          {this.state.filter.length > 0 ? (
+            <ContactsList contacts={this.filteredContacts()} />
+          ) : (
+            <ContactsList contacts={this.state.contacts} />
+          )}
         </div>
       </div>
     );
