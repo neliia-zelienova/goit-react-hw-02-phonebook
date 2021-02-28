@@ -4,13 +4,14 @@ import { v4 as uuidv4 } from "uuid";
 
 class App extends React.Component {
   state = {
-    contacts: [{ id: uuidv4(), name: "TestName1" }],
+    contacts: [{ id: uuidv4(), name: "TestName1", phone: "066-122-80-53" }],
     name: "",
-    phone: ""
+    phone: "",
   };
 
   handleInput = (e) => {
-    this.setState({ name: e.target.value });
+    const { name, value } = e.currentTarget;
+    this.setState({ [name]: value });
   };
 
   handleSubmit = (e) => {
@@ -18,6 +19,7 @@ class App extends React.Component {
     this.state.contacts.push({
       id: uuidv4(),
       name: this.state.name,
+      phone: this.state.phone
     });
     this.resetForm();
   };
@@ -25,6 +27,7 @@ class App extends React.Component {
   resetForm = () => {
     this.setState({
       name: "",
+      phone: "",
     });
   };
   render() {
@@ -48,7 +51,7 @@ class App extends React.Component {
                 type="text"
                 name="phone"
                 onChange={this.handleInput}
-                value={this.state.name}
+                value={this.state.phone}
               ></input>
             </label>
             <button type="submit">Add contact</button>
@@ -58,7 +61,10 @@ class App extends React.Component {
           <h1>Contacts</h1>
           <ul>
             {this.state.contacts.map((contact) => (
-              <li key={contact.id}>{contact.name}</li>
+              <li key={contact.id}>
+                <span>{`${contact.name}:`}</span>
+                <span>{contact.phone}</span>
+              </li>
             ))}
           </ul>
         </div>
