@@ -44,12 +44,19 @@ class App extends React.Component {
     this.setState({ filter: e.currentTarget.value });
   };
 
-  render() {
+  getContactsForRender = () => {
     const { contacts, filter } = this.state;
     const normalizedFilter = filter.toLowerCase();
-    const visibleNumbers = contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(normalizedFilter)
-    );
+    return filter.length > 0
+      ? contacts.filter((contact) =>
+          contact.name.toLowerCase().includes(normalizedFilter)
+        )
+      : contacts;
+  };
+
+  render() {
+    const { contacts } = this.state;
+    const contactsFprRender = this.getContactsForRender();
     return (
       <div className="App">
         <Container title="Phonebook">
@@ -59,7 +66,7 @@ class App extends React.Component {
           <Container title="Contacts">
             <Filter onChange={this.handleFiltering} />
             <ContactsList
-              contacts={visibleNumbers}
+              contacts={contactsFprRender}
               onDelete={this.deleteContact}
             />
           </Container>
