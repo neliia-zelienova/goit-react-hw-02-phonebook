@@ -44,29 +44,22 @@ class App extends React.Component {
     this.setState({ filter: e.currentTarget.value });
   };
 
-  filteredContacts = () => {
-    return this.state.contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
-    );
-  };
-
-  getContactsForRender = () => {
-    return this.state.filter.length > 0
-      ? this.filteredContacts()
-      : this.state.contacts;
-  };
-
   render() {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+    const visibleNumbers = contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
     return (
       <div className="App">
         <Container title="Phonebook">
           <ContactForm onSubmit={this.formSubmitHandler} />
         </Container>
-        {this.state.contacts.length > 0 ? (
+        {contacts.length > 0 ? (
           <Container title="Contacts">
             <Filter onChange={this.handleFiltering} />
             <ContactsList
-              contacts={this.getContactsForRender()}
+              contacts={visibleNumbers}
               onDelete={this.deleteContact}
             />
           </Container>
