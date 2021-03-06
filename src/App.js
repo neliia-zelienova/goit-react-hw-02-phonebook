@@ -13,6 +13,19 @@ class App extends React.Component {
     filter: "",
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem("contacts");
+    if (contacts) {
+      this.setState({ contacts: JSON.parse(contacts) });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contatcts) {
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+    }
+  }
+
   formSubmitHandler = ({ name, number }) => {
     if (this.isContactExist(name)) alert(`${name} is already in contacts`);
     else if (name === "" || number === "") return;
