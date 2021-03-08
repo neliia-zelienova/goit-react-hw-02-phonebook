@@ -36,6 +36,7 @@
 .form__submit__btn:hover,
 :focus {
   background-color: #e4dfdf;
+  box-shadow: none;
 }
 
 .form__submit__btn:focus {
